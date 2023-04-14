@@ -2,7 +2,6 @@ import { Component } from 'react';
 import { ImageGallery } from 'components/ImageGallery/ImageGallery';
 import { GeneralWrap } from './App.styled';
 import { Searchbar } from '../Searchbar/Searchbar';
-import { Modal } from '../Modal/Modal';
 
 export class App extends Component {
   state = {
