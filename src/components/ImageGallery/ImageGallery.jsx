@@ -70,7 +70,7 @@ export class ImageGallery extends Component {
 
     //==== Якщо змінилася сторінка ====
     if (prevState.page !== page && page !== 1) {
-      this.setState({ loading: true });
+      this.setState({ loading: true, showLoadMoreBtn: false });
 
       getData(qwery, page).then(data => {
         //Розрахунок загальної кількості сторінок
