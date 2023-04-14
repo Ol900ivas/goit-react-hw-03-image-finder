@@ -30,11 +30,20 @@ export class ImageGallery extends Component {
         loading: true,
         images: null,
         showLoadMoreBtn: false,
+        page: 1,
       });
-      getData(qwery, page)
+      getData(qwery, 1)
         .then(data => {
+          const imgSet = data.hits.map(
+            ({ id, webformatURL, largeImageURL }) => ({
+              id,
+              webformatURL,
+              largeImageURL,
+            })
+          );
+
           if (data.totalHits === 0) {
-            this.setState({ loading: false });
+            this.setState({ loading: false, showLoadMoreBtn: false });
             return toast.error(
               'Sorry, there are no images matching your search query. Please try again.'
             );
@@ -42,7 +51,7 @@ export class ImageGallery extends Component {
           if (data.totalHits <= 12) {
             this.setState({
               loading: false,
-              images: data.hits,
+              images: imgSet,
               showLoadMoreBtn: false,
               page: 1,
             });
@@ -53,7 +62,7 @@ export class ImageGallery extends Component {
             return Promise.reject(data.message);
           }
           this.setState({
-            images: data.hits,
+            images: imgSet,
             loading: false,
             page: 1,
             showLoadMoreBtn: true,
@@ -73,19 +82,25 @@ export class ImageGallery extends Component {
       this.setState({ loading: true, showLoadMoreBtn: false });
 
       getData(qwery, page).then(data => {
+        const imgSet = data.hits.map(({ id, webformatURL, largeImageURL }) => ({
+          id,
+          webformatURL,
+          largeImageURL,
+        }));
+
         //Розрахунок загальної кількості сторінок
         const totalPages = Math.ceil(data.totalHits / 12);
         console.log('totalPages', totalPages);
         if (page === totalPages) {
           this.setState({ loading: false, showLoadMoreBtn: false });
           this.setState(prevState => ({
-            images: [...prevState.images, ...data.hits],
+            images: [...prevState.images, ...imgSet],
           }));
           return toast.success("You've reached the end of search results.");
         }
         this.setState({ loading: false, showLoadMoreBtn: true });
         this.setState(prevState => ({
-          images: [...prevState.images, ...data.hits],
+          images: [...prevState.images, ...imgSet],
         }));
       });
     }
@@ -120,7 +135,7 @@ export class ImageGallery extends Component {
         {loading && page === 1 && <Loader />}
 
         {images && (
-          <Gallery onClick={this.onImgClick}>
+          <Gallery>
             {images.map(({ id, webformatURL, largeImageURL }) => {
               return (
                 <li key={id}>
@@ -128,6 +143,7 @@ export class ImageGallery extends Component {
                     id={id}
                     webformatURL={webformatURL}
                     largeImageURL={largeImageURL}
+                    onClick={this.onImgClick}
                   />
                 </li>
               );
