@@ -1,5 +1,4 @@
 import styled from '@emotion/styled';
-import { BsGpuCard } from 'react-icons/bs';
 
 /*
  * Стили компонента ImageGallery
