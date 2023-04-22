@@ -5,17 +5,17 @@ import { Searchbar } from '../Searchbar/Searchbar';
 
 export class App extends Component {
   state = {
-    qwery: '',
+    query: '',
   };
 
-  createQwery = qwery => {
-    this.setState({ qwery });
+  createQuery = query => {
+    this.setState({ query });
   };
   render() {
     return (
       <GeneralWrap>
-        <Searchbar onSubmit={this.createQwery} />
-        <ImageGallery qwery={this.state.qwery} />
+        <Searchbar onSubmit={this.createQuery} />
+        <ImageGallery query={this.state.query} />
       </GeneralWrap>
     );
   }

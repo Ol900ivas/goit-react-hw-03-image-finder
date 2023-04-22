@@ -21,18 +21,18 @@ export class ImageGallery extends Component {
   };
 
   componentDidUpdate(prevProps, prevState) {
-    const qwery = this.props.qwery.trim();
+    const query = this.props.query.trim();
     const { page } = this.state;
 
     //==== Якщо новий запрос ====
-    if (prevProps.qwery !== qwery && qwery) {
+    if (prevProps.query !== query && query) {
       this.setState({
         loading: true,
         images: null,
         showLoadMoreBtn: false,
         page: 1,
       });
-      getData(qwery, 1)
+      getData(query, 1)
         .then(data => {
           const imgSet = data.hits.map(
             ({ id, webformatURL, largeImageURL }) => ({
@@ -81,7 +81,7 @@ export class ImageGallery extends Component {
     if (prevState.page !== page && page !== 1) {
       this.setState({ loading: true, showLoadMoreBtn: false });
 
-      getData(qwery, page).then(data => {
+      getData(query, page).then(data => {
         const imgSet = data.hits.map(({ id, webformatURL, largeImageURL }) => ({
           id,
           webformatURL,
@@ -160,5 +160,5 @@ export class ImageGallery extends Component {
 }
 
 ImageGallery.propTypes = {
-  qwery: PropTypes.string.isRequired,
+  query: PropTypes.string.isRequired,
 };
